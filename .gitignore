@@ -29,3 +29,5 @@ coverage
 /public/
 
 src/assets/*.svg
+/build.sh
+/dev-dist/
