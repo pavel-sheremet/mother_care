@@ -1,9 +1,11 @@
-<script setup>
-import TheWelcome from '../components/TheWelcome.vue'
-</script>
-
 <template>
-  <main>
-    <TheWelcome />
-  </main>
+
+    <feeding-items />
+
 </template>
+
+<script setup>
+
+import FeedingItems from '@/components/FeedingItems.vue'
+
+</script>

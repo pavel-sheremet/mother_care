@@ -1,6 +1,6 @@
 # mother_care
 
-This template should help get you started developing with Vue 3 in Vite.
+As a loving father of a five-month-old son, I felt a strong urge to use my skills and knowledge to support my family. That's why I created this Progressive Web Application (PWA) for my wife, to assist her in managing the breastfeeding process. It's a straightforward, serverless solution that keeps all data securely stored in the local storage of the device. Although it's currently a minimal, stable version, I am committed to adding new features as needed in the future to make it even more useful for my wife and others.
 
 ## Recommended IDE Setup
 
