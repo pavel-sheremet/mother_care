@@ -38,6 +38,10 @@
                 </td>
             </tr>
         </template>
+
+        <tr>
+            <td colspan="4" style="height: 120px"></td>
+        </tr>
         </tbody>
     </v-table>
 
@@ -203,7 +207,6 @@
     z-index: 2;
 }
 
-
 .feeding_items__action_buttons__hidden {
     transform: translateY(150px);
 }
@@ -312,7 +315,7 @@
 import FeedingItemForm from '@/components/FeedingItemForm.vue'
 
 // import vue
-import {computed, onBeforeUnmount, onMounted, ref, watch} from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 
 // import services
@@ -376,7 +379,6 @@ const { isDarkMode, DARK_THEME_NAME, LIGHT_THEME_NAME } = useThemeService()
 // data
 const tableHeight = ref(0)
 const showAddFeedingItemModalForm = ref(false)
-const datetime = ref(Date.now())
 const drawImportDialog = ref(false)
 
 // computed
@@ -389,8 +391,8 @@ const importRules = [
 ]
 
 // actions
-const onWindowResize = () => {
-    tableHeight.value = window.innerHeight - 77
+const onWindowResize = async () => {
+    tableHeight.value = document.documentElement.clientHeight - 77
 }
 
 onMounted(() => {
