@@ -1,6 +1,6 @@
 <template class="feeding_items">
 
-    <v-table fixed-header density="compact" :height="tableHeight" class="feeding_items__table" v-resize="onWindowResize">
+    <v-table fixed-header density="compact" class="feeding_items__table">
         <thead>
         <tr class="feeding_items__table__new_item_row" v-show="items.length">
             <td colspan="4" class="text-center">{{ lastItemDiff }}</td>
@@ -38,6 +38,10 @@
                 </td>
             </tr>
         </template>
+
+        <tr>
+            <td colspan="4" style="height: 120px"></td>
+        </tr>
         </tbody>
     </v-table>
 
@@ -132,6 +136,11 @@
 </template>
 
 <style>
+
+.feeding_items__table {
+    height: calc(100vh - 77px);
+    overflow-y: scroll;
+}
 
 .feeding_items__table table th {
     height: 60px !important;
@@ -312,7 +321,7 @@
 import FeedingItemForm from '@/components/FeedingItemForm.vue'
 
 // import vue
-import {computed, onBeforeUnmount, onMounted, ref, watch} from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 
 // import services
@@ -374,9 +383,7 @@ const {
 const { isDarkMode, DARK_THEME_NAME, LIGHT_THEME_NAME } = useThemeService()
 
 // data
-const tableHeight = ref(0)
 const showAddFeedingItemModalForm = ref(false)
-const datetime = ref(Date.now())
 const drawImportDialog = ref(false)
 
 // computed
@@ -387,11 +394,6 @@ const showActionRemoveButton = computed(() => !!checkedItems.value.length)
 const importRules = [
     value => !value || !value.length || validateImportFile(value) || validationErrorMessage
 ]
-
-// actions
-const onWindowResize = () => {
-    tableHeight.value = window.innerHeight - 77
-}
 
 onMounted(() => {
     feedingTableScrollService.addEventListener(document.querySelector('.v-table__wrapper'))

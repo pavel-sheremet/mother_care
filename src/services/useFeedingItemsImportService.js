@@ -5,6 +5,7 @@ export const useFeedingItemsImportService = () => {
     const { addItems } = useFeedingItemsService()
     
     // constants
+    // todo: try to do enum
     const FEEDING_ITEMS_IMPORT_STATUS_CLEAR = 'clear'
     const FEEDING_ITEMS_IMPORT_STATUS_IN_PROCESS = 'in_process'
     const FEEDING_ITEMS_IMPORT_STATUS_DONE = 'done'
