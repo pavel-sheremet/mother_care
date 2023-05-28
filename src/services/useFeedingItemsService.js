@@ -20,7 +20,8 @@ export const useFeedingItemsService = () => {
 
     // data
     const checkedItems = ref([])
-    const lastItemDiff = ref('')
+    const lastBreastfeedItemDiff = ref('')
+    const lastManualFeedItemDiff = ref('')
 
     // computed
     const exportString = computed(() => "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(storeItems.value)))
@@ -82,18 +83,35 @@ export const useFeedingItemsService = () => {
         checkedItems.value = allDates.value
     }
 
-    const getLastItemDiff = (format) => {
+    const getLastFeedingItemDiff = (format, isManual = false) => {
         if (!storeItems.value.length) {
             return
         }
 
-        const diff = dayjs.duration(dayjs().diff(storeItems.value[0].date))
+        let i = 0
+
+        while (
+            (isManual && storeItems.value[i].side !== FEEDING_MANUAL_SIDE_KEY) ||
+            (!isManual && storeItems.value[i].side === FEEDING_MANUAL_SIDE_KEY)
+        ) {
+            if (i >= storeItems.value.length - 1) {
+                return null;
+            }
+
+            i++
+        }
+
+
+        const diff = dayjs.duration(dayjs().diff(storeItems.value[i].date))
 
         return format ? diff.format(format) : diff
     }
 
     onMounted(() => {
-        setInterval(() => { lastItemDiff.value = getLastItemDiff('HH:mm:ss') }, 500)
+        setInterval(() => {
+            lastBreastfeedItemDiff.value = getLastFeedingItemDiff('HH:mm:ss')
+            lastManualFeedItemDiff.value = getLastFeedingItemDiff('HH:mm:ss', true)
+        }, 500)
     })
 
     return {
@@ -105,11 +123,11 @@ export const useFeedingItemsService = () => {
         suggestSide,
         allDates,
         checkedItems,
-        lastItemDiff,
+        lastBreastfeedItemDiff,
+        lastManualFeedItemDiff,
         addItem,
         addItems,
         removeItems,
         checkAllItems,
-        getLastItemDiff,
     }
 }
