@@ -2,9 +2,16 @@
 
     <v-table fixed-header density="compact" :height="tableHeight" class="feeding_items__table" v-resize="onWindowResize">
         <thead>
-        <tr class="feeding_items__table__new_item_row" v-show="items.length">
-            <td colspan="4" class="text-center">{{ lastItemDiff }}</td>
-        </tr>
+        <template v-if="items.length">
+            <tr class="feeding_items__table__new_item_row" v-show="items.length">
+                <td colspan="4">
+                    <div>
+                        <div>bf: {{ lastBreastfeedItemDiff }}</div>
+                        <div v-if="lastManualFeedItemDiff">mf: {{ lastManualFeedItemDiff }}</div>
+                    </div>
+                </td>
+            </tr>
+        </template>
         <tr>
             <th class="text-left">Time</th>
             <th class="text-left">Diff</th>
@@ -71,6 +78,15 @@
                @click.stop="addItem(FEEDING_RIGHT_SIDE_KEY)"
         >
             R
+        </v-btn>
+        <v-btn :theme="isDarkMode ? LIGHT_THEME_NAME : DARK_THEME_NAME"
+               class="feeding_items__action_add_button"
+               :class="{ 'feeding_items__action_buttons__hidden': !showActionAddButtons || !!checkedItems.length }"
+               icon
+               size="x-large"
+               @click.stop="addItem(FEEDING_MANUAL_SIDE_KEY)"
+        >
+            M
         </v-btn>
         <v-btn class="feeding_items__action_remove_button"
                :class="{ feeding_items__action_buttons__hidden: !showActionRemoveButton, __transition_delay_0: !showActionAddButtons && feedingTableScrollService.scrolledDown.value }"
@@ -155,6 +171,11 @@
     height: 45px;
 }
 
+.feeding_items__table__new_item_row td > div {
+    display: flex;
+    justify-content: space-evenly;
+}
+
 .feeding_items__table .feeding_items__table__table_separator {
     position: sticky;
     top: 40px;
@@ -219,13 +240,17 @@
     transition-delay: .1s;
 }
 
-.feeding_items__action_add_button:last-child {
+.feeding_items__action_add_button:nth-child(3) {
     transition-delay: .2s;
+}
+
+.feeding_items__action_add_button:last-child {
+    transition-delay: .3s;
 }
 
 .feeding_items__action_remove_button {
     position: absolute;
-    transition-delay: .2s;
+    transition-delay: .3s;
 }
 
 .feeding_items__action_remove_button.feeding_items__action_buttons__hidden {
@@ -362,11 +387,13 @@ const {
 const {
     FEEDING_LEFT_SIDE_KEY,
     FEEDING_RIGHT_SIDE_KEY,
+    FEEDING_MANUAL_SIDE_KEY,
     preparedItems,
     suggestSide,
     allDates,
     checkedItems,
-    lastItemDiff,
+    lastBreastfeedItemDiff,
+    lastManualFeedItemDiff,
     exportString: feedingItemsExportString,
     addItem,
     removeItems,
