@@ -51,15 +51,10 @@
 // import vue
 import { ref, toRefs } from 'vue'
 
-// import store
-import { useFeedingItemsStore } from '@/stores/useFeedingItemsStore';
-
 // import services
 import { mdiChevronRight, mdiClose } from '@mdi/js'
 import dayjs from 'dayjs';
-
-// store
-const feedingItemsStore = useFeedingItemsStore()
+import { useFeedingItemsService } from '@/services/useFeedingItemsService';
 
 // emits
 const emits = defineEmits(['close'])
@@ -70,9 +65,21 @@ const props = defineProps({
     side: String
 })
 
+// refs
+const {
+    FEEDING_LEFT_SIDE_KEY,
+    FEEDING_RIGHT_SIDE_KEY,
+    FEEDING_MANUAL_SIDE_KEY,
+    addItem: serviceAddItem,
+} = useFeedingItemsService()
+
 // props data
 const { dateTime: dateTimeProp, side: sideProp } = toRefs(props)
-const sides = [{ name: 'Left', value: 'l' }, { name: 'Right', value: 'r' }]
+const sides = [
+    { name: 'Left', value: FEEDING_LEFT_SIDE_KEY },
+    { name: 'Right', value: FEEDING_RIGHT_SIDE_KEY },
+    { name: 'Manual', value: FEEDING_MANUAL_SIDE_KEY },
+]
 
 // data
 const dateTime = ref(dayjs(dateTimeProp.value).format('YYYY-MM-DDTHH:mm:ss'))
@@ -91,7 +98,8 @@ const addItem = async () => {
     const validation = await form.value.validate()
 
     if (validation.valid === true) {
-        feedingItemsStore.addItem(side.value, dayjs(dateTime.value).valueOf())
+        serviceAddItem(side.value, dayjs(dateTime.value).valueOf())
+
         emits('close')
     }
 }

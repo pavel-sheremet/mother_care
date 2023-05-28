@@ -1,5 +1,5 @@
 import { useFeedingItemsStore } from '@/stores/useFeedingItemsStore';
-import {computed, onMounted, ref} from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 
 import dayjs from 'dayjs'
@@ -10,6 +10,7 @@ export const useFeedingItemsService = () => {
     // constants
     const FEEDING_LEFT_SIDE_KEY = 'l'
     const FEEDING_RIGHT_SIDE_KEY = 'r'
+    const FEEDING_MANUAL_SIDE_KEY = 'm'
 
     // use
     const feedingItemsStore = useFeedingItemsStore()
@@ -30,7 +31,13 @@ export const useFeedingItemsService = () => {
             return null
         }
 
-        return storeItems.value[0].side === FEEDING_RIGHT_SIDE_KEY ? FEEDING_LEFT_SIDE_KEY : FEEDING_RIGHT_SIDE_KEY
+        let i = 0
+
+        while (storeItems.value[i].side === FEEDING_MANUAL_SIDE_KEY) {
+            i++
+        }
+
+        return storeItems.value[i].side === FEEDING_RIGHT_SIDE_KEY ? FEEDING_LEFT_SIDE_KEY : FEEDING_RIGHT_SIDE_KEY
     })
 
     const preparedItems = computed(() => {
@@ -92,6 +99,7 @@ export const useFeedingItemsService = () => {
     return {
         FEEDING_LEFT_SIDE_KEY,
         FEEDING_RIGHT_SIDE_KEY,
+        FEEDING_MANUAL_SIDE_KEY,
         preparedItems,
         exportString,
         suggestSide,

@@ -211,8 +211,7 @@
     transform: translateY(150px);
 }
 
-.feeding_items__action_add_button,
-.feeding_items__action_remove_button {
+.feeding_items__action_add_button {
     margin: 0 10px;
 }
 
@@ -225,7 +224,7 @@
 }
 
 .feeding_items__action_remove_button {
-    margin-left: -74px;
+    position: absolute;
     transition-delay: .2s;
 }
 
@@ -380,9 +379,10 @@ const { isDarkMode, DARK_THEME_NAME, LIGHT_THEME_NAME } = useThemeService()
 const tableHeight = ref(0)
 const showAddFeedingItemModalForm = ref(false)
 const drawImportDialog = ref(false)
+const manualShowActionAddButtonsValue = ref(false)
 
 // computed
-const showActionAddButtons = computed(() => !feedingTableScrollService.scrolledDown.value && !checkedItems.value.length)
+const showActionAddButtons = computed(() => (!feedingTableScrollService.scrolledDown.value && !checkedItems.value.length) || manualShowActionAddButtonsValue.value)
 const showActionRemoveButton = computed(() => !!checkedItems.value.length)
 
 // rules
